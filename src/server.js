@@ -10,7 +10,7 @@ app.get('/purchases',(req,res)=> res.status(200).json([
      {
         id:1,
         rnc:'101675489',
-        tax_payer_name:'URENA LORENZO & ASOCIADOS SRL',
+        tax_payer_name:'URENA LORENZO & ASOCIADOS S.R.L.',
         ncfType:1,
         ncf:'B0100000001',
         ncfModifedType:null,
