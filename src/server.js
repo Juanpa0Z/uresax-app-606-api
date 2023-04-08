@@ -17,7 +17,11 @@ app.get('/purchases',(req,res)=> res.status(200).json([
         ncfModifed:null,
         total:2500,
         tax:550.45,
-        created_at:new Date().toDateString()
+        created_at:new Date()
      }
 ]))
+
+app.listen(process.env.PORT || 3000,()=>{
+    console.log('Server Running...');
+})
 
