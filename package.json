@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx prisma migrate dev --name init && node src/server.js",
+    "start": "npm install -g npm@latest && npx prisma migrate dev --name init && node src/server.js",
     "dev":"npx prisma migrate dev --name init && npm start"
   },
   "keywords": [],
