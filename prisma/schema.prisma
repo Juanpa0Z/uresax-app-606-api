@@ -2,6 +2,10 @@ datasource db {
   provider = "postgresql"
   url = env("DATABASE_URL")
 }
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets =  "../src/"
+}
 
 model TaxPayer {
   id String @id
