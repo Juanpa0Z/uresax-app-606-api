@@ -1,0 +1,106 @@
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+model TaxPayer {
+  id String @id
+  name String
+  fullName String
+  about String
+  createdAt String
+  state String
+  status String
+  purchases Purchase[]
+  companies Company[]
+}
+
+model InvoiceType {
+    id String @id
+    name String @unique
+    purchases Purchase[]
+    createdAt DateTime @default(now())
+}
+
+model NcfType {
+    id String @id
+    name String @unique
+    ncfs Purchase[] @relation(name:"Ncf")
+    ncfsModifed Purchase[] @relation(name:"NcfModifed")
+    createdAt DateTime @default(now())
+}
+
+model RetentionTax {
+    id Int @id @default(autoincrement())
+    name String
+    rate Int
+    purchases Purchase[]
+    createdAt DateTime @default(now())
+}
+
+model RetentionIsr {
+    id Int @id @default(autoincrement())
+    name String
+    rate Int
+    purchases Purchase[]
+    createdAt DateTime @default(now())
+}
+
+model PaymentMethod {
+    id Int @id @default(autoincrement())
+    name String
+    purchases Purchase[]
+    createdAt DateTime @default(now())
+}
+
+model User {
+    id String @id @default(cuid())
+    username String @unique
+    password String
+    subscriptionId String?
+    companies Company[]
+    purchases Purchase[]
+    createdAt DateTime @default(now())
+}
+
+model Company {
+    id String @id @default(cuid())
+    rnc String
+    taxPayer TaxPayer @relation(fields: [rnc],references: [id])
+    name String
+    authorId String
+    author User @relation(fields: [authorId],references: [id])
+    purchases Purchase[]
+    createdAt DateTime @default(now())
+}
+
+model Purchase {
+    id String @id @default(cuid())
+    companyId String
+    company Company @relation(fields: [companyId],references: [id])
+    author User @relation(fields: [authorId],references: [id])
+    authorId String
+    rnc String
+    taxPayer TaxPayer? @relation(fields: [rnc],references: [id])
+    invoiceTypeId String
+    invoiceType InvoiceType @relation(fields: [invoiceTypeId],references: [id])
+    ncfTypeId String
+    ncf NcfType @relation(name:"Ncf",fields: [ncfTypeId],references: [id])
+    ncfValue String
+    ncfModifedTypeId String?
+    ncfModifed NcfType? @relation(name:"NcfModifed",fields: [ncfModifedTypeId],references: [id])
+    ncfModifedValue String?
+    retentionTaxId Int?
+    retentionTax RetentionTax? @relation(fields: [retentionTaxId],references: [id])
+    retentionIsrId Int?
+    retentionIsr RetentionIsr? @relation(fields: [retentionIsrId],references: [id])
+    paymentMethodId Int
+    paymentMethod PaymentMethod @relation(fields: [paymentMethodId],references: [id])
+    total Decimal @db.Decimal(10, 2)
+    tax Decimal @db.Decimal(10, 2)
+    dateOfIssue DateTime
+    paymentDate DateTime
+}
+
+
+
